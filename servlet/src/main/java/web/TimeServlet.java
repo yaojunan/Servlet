@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Enumeration;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +25,16 @@ public class TimeServlet extends HttpServlet {
 		//1.1读取请求行
 		System.out.println("请求方式" + req.getMethod());
 		System.out.println("访问路径" + req.getServletPath());
-		System.out.println("协议类型" + req.getProtocol());		
+		System.out.println("协议类型" + req.getProtocol());
+
+		ServletInputStream ris = req.getInputStream();
+		StringBuilder content = new StringBuilder();
+		byte[] b = new byte[1024];
+		int lens = -1;
+		while ((lens = ris.read(b)) > 0) {
+			content.append(new String(b, 0, lens));
+		}
+		String strcont = content.toString();// 内容
 		//1.2读取消息头
 		//getHeaderNames()返回key的迭代器,
 		//该迭代器是比Iterator更古老的迭代器.
